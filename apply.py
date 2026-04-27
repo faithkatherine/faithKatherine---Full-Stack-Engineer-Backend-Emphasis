@@ -24,7 +24,7 @@ from datetime import datetime, timezone
 import sys
 
 SIGNING_SECRET = b"hello-there-from-b12"
-ENDPOINT = "https://webhook.site/d20d7859-0bc1-4f26-a21b-957a9337d2a1"
+ENDPOINT = "https://b12.io/apply/submission"
 
 
 def build_payload() -> dict:
