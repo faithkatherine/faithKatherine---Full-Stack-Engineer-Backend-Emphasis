@@ -1,0 +1,29 @@
+name : Apply to B12
+
+on:
+  workflow_dispatch:  # Allows manual triggering of the workflow from the GitHub Actions tab.
+  push:
+    branches: ["main"]  # Triggers the workflow on pushes to the main branch.
+    paths:
+      - "apply.py"  # Triggers the workflow only if the apply.py file is modified.
+      - " -github/workflows/apply.yml"  # Triggers the workflow if the workflow file itself is modified.
+
+jobs:
+  submit:
+    runs-on : ubuntu-latest  # Specifies the environment to run the job on.
+    steps:
+      -uses : actions/checkout@v2  # Checks out the repository to the runner.
+
+      -name: Set Up Python
+      uses: actions/setup-python@v5  # Sets up a Python environment for the job.
+      with:
+          python-version: '3.12'  
+
+      -name: Submit Application
+      env: 
+        APPLICANT_NAME: ${{ vars.APPLICANT_NAME }}  # Passes the applicant's name as an environment variable.
+        APPLICANT_EMAIL: ${{ vars.APPLICANT_EMAIL }}  # Passes the applicant's email as an environment variable.
+        RESUME_LINK: ${{ vars.RESUME_LINK }}
+        REPOSITORY_LINK: ${{ github.server_url }}/${{ github.repository }}
+        ACTION_RUN_LINK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: python apply.py
